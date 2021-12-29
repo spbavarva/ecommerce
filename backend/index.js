@@ -1,0 +1,31 @@
+const app = require("./app");
+const dotenv = require("dotenv");
+const connectDatabase = require("./config/databse");
+
+//Uncaught Handlig
+process.on("uncaughtException", (err) => {
+  console.log(`Error: ${err.message}`);
+  console.log("server is Shutting down due to Uncaught Exception");
+  // process.exist(1);
+  process.exit?.(1);
+});
+
+//Config
+dotenv.config({ path: "backend/config/config.env" });
+
+//connect to DB
+connectDatabase();
+
+app.listen(process.env.PORT, () => {
+  console.log(`listning on port ${process.env.PORT}`);
+});
+
+//Unhandled Promise Rejection
+process.on("unhandledRejection", (err) => {
+  console.log(`Error: ${err.message}`);
+  console.log("server is Shutting down due to Unhandled Promise Rejection");
+
+  index.close(() => {
+    process.exist?.(1);
+  });
+});
