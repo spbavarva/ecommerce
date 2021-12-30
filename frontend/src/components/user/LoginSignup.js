@@ -7,11 +7,13 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import FaceIcon from "@mui/icons-material/Face";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
-import { clearError, login } from "../../actions/userActions";
+import { clearError, login, register } from "../../actions/userActions";
+import { useNavigate } from "react-router-dom";
 
 const LoginSignup = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
+  const navigate = useNavigate();
 
   const loginTab = useRef(null);
   const switcherTab = useRef(null);
@@ -27,7 +29,9 @@ const LoginSignup = () => {
   const [avatar, setAvatar] = useState("./Profile.png");
   const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
 
-  const { loading, error,isAuthenticated } = useSelector((state) => state.user);
+  const { loading, error, isAuthenticated } = useSelector(
+    (state) => state.user
+  );
 
   const { password, email, name } = user;
   const loginSubmit = (e) => {
@@ -45,7 +49,7 @@ const LoginSignup = () => {
     myForm.set("email", email);
     myForm.set("password", password);
     myForm.set("avatar", avatar);
-    console.log("sign up submited");
+    dispatch(register(myForm));
   };
 
   const registerDataChange = (e) => {
@@ -64,6 +68,17 @@ const LoginSignup = () => {
       setUser({ ...user, [e.target.name]: e.target.value });
     }
   };
+
+  useEffect(() => {
+    if (error) {
+      alert.error(error);
+      dispatch(clearError());
+    }
+
+    if (isAuthenticated) {
+      navigate("/account");
+    }
+  }, [dispatch, error, alert, isAuthenticated, navigate]);
 
   const switchTabs = (e, tab) => {
     if (tab === "login") {

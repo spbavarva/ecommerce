@@ -1,6 +1,8 @@
 const app = require("./app");
 const dotenv = require("dotenv");
 const connectDatabase = require("./config/databse");
+const cloudinary = require("cloudinary");
+const cloudinary = require("cloudinary");
 
 //Uncaught Handlig
 process.on("uncaughtException", (err) => {
@@ -15,6 +17,12 @@ dotenv.config({ path: "backend/config/config.env" });
 
 //connect to DB
 connectDatabase();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 app.listen(process.env.PORT, () => {
   console.log(`listning on port ${process.env.PORT}`);

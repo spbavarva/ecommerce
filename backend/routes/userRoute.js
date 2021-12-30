@@ -11,7 +11,7 @@ const {
   getAllUsers,
   getUserDetail,
   updateUserRole,
-  deleteUserProfile,
+  deleteUserProfile
 } = require("../controllers/userController");
 const { isAuthenticatedUser, authorizedRoles } = require("../middleware/auth");
 
