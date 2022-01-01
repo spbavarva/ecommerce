@@ -34,7 +34,7 @@ import ReviewCard from "./ReviewCard.js";
 //     fontWeight: "bold",
 //   };
 // };
-const ProductDetails = ({ match }) => {
+const ProductDetails = () => {
   // const state = store.getState();
   //   console.log(state);
 

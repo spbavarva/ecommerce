@@ -4,7 +4,7 @@ const errorMiddleware = require("./middleware/error");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const fileUpload = require("express-fileupload");
-const cloudinary = require("cloudinary");
+// const cloudinary = require("cloudinary");
 require("dotenv").config();
 
 app.use(express.json());

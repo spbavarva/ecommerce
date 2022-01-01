@@ -28,14 +28,19 @@ export const login = (email, password) => async (dispatch) => {
   }
 };
 
-export const register = (userData) => async (dispatch) => {
+export const register = (name, email, password) => async (dispatch) => {
   try {
     dispatch({ type: REGISTER_REQUEST });
 
-    const config = { headers: { "Content-Type": "multipart/form-data" } };
+    // const config = { headers: { "Content-Type": "multipart/form-data" } };
 
-    const { data } = await axios.post(`/api/v1/register`, { userData }, config);
-    console.log(data);
+    console.log(name, email, password);
+    const { data } = await axios.post(`/api/v1/register`, {
+      name,
+      email,
+      password
+    });
+    console.log("hellohi");
 
     dispatch({ type: REGISTER_SUCCESS, payload: data.user });
   } catch (error) {
