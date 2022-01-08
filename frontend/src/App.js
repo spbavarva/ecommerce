@@ -9,14 +9,23 @@ import ProductDetails from "./components/product/ProductDetails";
 import Products from "./components/product/Products";
 import Search from "./components/product/Search";
 import LoginSignup from "./components/user/LoginSignup";
+import store from "./store";
+import { loadUser } from "./actions/userActions";
+import UserOptions from "./components/layout/header/UserOptions";
+import { useSelector } from "react-redux";
+import Profile from "./components/user/Profile";
+import ProtectedRoute from "./components/Route/ProtectedRoute";
+import UpdateProfile from "./components/user/UpdateProfile";
 
 function App() {
+  const { isAuthenticated, user } = useSelector((state) => state.user);
   React.useEffect(() => {
     WebFont.load({
       google: {
         families: ["Roboto", "Droid Sans", "Chilanka"]
       }
     });
+    store.dispatch(loadUser());
   }, []);
   return (
     <div className="App">
@@ -24,12 +33,23 @@ function App() {
         {/* <Route path="/" element={<Header/>}></Route> */}
 
         <Header></Header>
+        {isAuthenticated && <UserOptions user={user}></UserOptions>}
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/product/:id" element={<ProductDetails />}></Route>
           <Route path="/products" element={<Products />}></Route>
           <Route path="/products/:keyword" element={<Products />}></Route>
+
+          <Route
+            path="/account"
+            element={
+              // <ProtectedRoute>
+              <Profile />
+              // </ProtectedRoute>
+            }
+          ></Route>
           <Route path="/search" element={<Search />}></Route>
+          <Route path="/me/update" element={<UpdateProfile />}></Route>
           <Route path="/login" element={<LoginSignup />}></Route>
         </Routes>
         {/* <Route path="/" element={<Footer />}></Route> */}
