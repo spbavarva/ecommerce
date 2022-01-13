@@ -3,7 +3,6 @@ import "./updateProfile.css";
 import Loader from "../layout/loader/Loader";
 import { Link } from "react-router-dom";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
-import LockOpenIcon from "@mui/icons-material/LockOpen";
 import FaceIcon from "@mui/icons-material/Face";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
