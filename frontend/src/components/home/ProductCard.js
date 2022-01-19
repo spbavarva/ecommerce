@@ -19,7 +19,7 @@ const ProductCard = ({ product }) => {
       <div>
         <ReactStars {...options} />{" "}
         <span> ({product.numOfReview} Reviews) </span>
-        {/* <span> ({product.Stock}) </span> */}
+        {/* <span> ({product.stock}) </span> */}
       </div>
       <span>${product.price}</span>
     </Link>

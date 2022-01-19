@@ -98,7 +98,7 @@ async function updateStock(id, quantity) {
   //       }
   //   });
 
-  product.Stock -= quantity;
+  product.stock -= quantity;
 
   await product.save({ validateBeforeSave: false });
 }

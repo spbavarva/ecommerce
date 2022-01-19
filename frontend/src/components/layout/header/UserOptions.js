@@ -19,9 +19,16 @@ const UserOptions = ({ user }) => {
 
   const [open, setOpen] = useState(false);
 
+  const { cartItems } = useSelector((state) => state.cart);
+
   const options = [
     { icon: <ListAltIcon />, name: "Orders", func: orders },
     { icon: <PersonIcon />, name: "Profile", func: account },
+    {
+      icon: <ShoppingCartIcon style={{color:cartItems.length>0?'tomato':null}} />,
+      name: `Cart(${cartItems.length})`,
+      func: cart
+    },
     { icon: <ExitToAppIcon />, name: "Logout", func: logoutUser }
   ];
 
@@ -43,6 +50,10 @@ const UserOptions = ({ user }) => {
 
   function account() {
     navigate("/account");
+  }
+
+  function cart() {
+    navigate("/Cart");
   }
 
   function logoutUser() {
@@ -69,8 +80,9 @@ const UserOptions = ({ user }) => {
         {options.map((item) => (
           <SpeedDialAction
             icon={item.icon}
-            tolltipTitle={item.name}
+            tooltipTitle={item.name}
             onClick={item.func}
+            tooltipOpen={window.innerWidth <= 600 ? true : false}
           ></SpeedDialAction>
         ))}
       </SpeedDial>

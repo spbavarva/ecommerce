@@ -1,8 +1,7 @@
 // import { Carousel } from "react-carousel-minimal";
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import Carousel from "react-material-ui-carousel";
 import ReactStars from "react-rating-stars-component";
-
 import Loader from "../layout/loader/Loader";
 import "./ProductDetails.css";
 import { clearError, getProductDetails } from "../../actions/productAction";
@@ -11,6 +10,7 @@ import { useParams } from "react-router-dom";
 import { useAlert } from "react-alert";
 // import { Rating } from "@mui/material";
 import ReviewCard from "./ReviewCard.js";
+import { addItemsToCart } from "../../actions/cartActions";
 
 // const App = () => {
 //   const data = [
@@ -100,6 +100,25 @@ const ProductDetails = () => {
     isHalf: true
   };
 
+  const [quantity, setQuantity] = useState(1);
+
+  const increaseQuantity = () => {
+    if (product.stock <= quantity) return;
+    const qty = quantity + 1;
+    setQuantity(qty);
+  };
+
+  const decreaseQuantity = () => {
+    if (1 >= quantity) return;
+
+    const qty = quantity - 1;
+    setQuantity(qty);
+  };
+
+  const addToCartHandler = () => {
+    dispatch(addItemsToCart(id, quantity));
+    alert.success('Item added successfully to cart')
+  };
   return (
     <Fragment>
       {loading ? (
@@ -137,19 +156,19 @@ const ProductDetails = () => {
                 <h1>{`$${product.price}`}</h1>
                 <div className="detailsBlock-3-1">
                   <div className="detailsBlock-3-1-1">
-                    <button>-</button>
-                    <input value="1" type="number" />
-                    <button>+</button>
+                    <button onClick={decreaseQuantity}>-</button>
+                    <input readOnly type="number" value={quantity} />
+                    <button onClick={increaseQuantity}>+</button>
                   </div>
-                  <button disabled={product.Stock < 1 ? true : false}>
+                  <button onClick={addToCartHandler} disabled={product.stock < 1 ? true : false}>
                     Add to Cart
                   </button>
                 </div>
 
                 <p>
                   Status:
-                  <b className={product.Stock < 1 ? "redColor" : "greenColor"}>
-                    {product.Stock < 1 ? "OutOfStock" : "InStock"}
+                  <b className={product.stock < 1 ? "redColor" : "greenColor"}>
+                    {product.stock < 1 ? "OutOfStock" : "InStock"}
                   </b>
                 </p>
               </div>
