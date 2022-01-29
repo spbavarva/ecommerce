@@ -6,11 +6,12 @@ import { useAlert } from "react-alert";
 import { addItemsToCart, removeCartItem } from "../../actions/cartActions";
 import { Typography } from "@material-ui/core";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
+  const navigate = useNavigate();
 
   const { cartItems } = useSelector((state) => state.cart);
 
@@ -31,6 +32,10 @@ const Cart = () => {
   const deleteCartItem = (id) => {
     dispatch(removeCartItem(id));
   };
+
+  const checkOutHandler=()=>{
+    navigate('/login?redirect=shipping')
+  }
 
   return (
     <Fragment>
@@ -92,7 +97,7 @@ const Cart = () => {
               </div>
               <div></div>
               <div className="checkOutBtn">
-                <button>Check Out</button>
+                <button onClick={checkOutHandler}>Check Out</button>
               </div>
             </div>
           </div>
