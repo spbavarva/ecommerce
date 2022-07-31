@@ -1,15 +1,12 @@
 import React, { Fragment, useState, useEffect } from "react";
 import "./resetPassword.css";
 import Loader from "../layout/loader/Loader";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import { clearError, resetPassword } from "../../actions/userActions";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import LockIcon from "@mui/icons-material/Lock";
-import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import { useNavigate } from "react-router-dom";
-import { UPDATE_PASSWORD_RESET } from "../../constants/userConstants";
 import { useParams } from "react-router-dom";
 import MetaData from "../layout/MetaData";
 
@@ -51,7 +48,7 @@ const ResetPassword = () => {
         <Loader />
       ) : (
         <Fragment>
-          <MetaData title="Update Password" />
+          <MetaData title="Reset Password | One Shop Stop" />
           <div className="resetPasswordContainer">
             <div className="resetPasswordBox">
               <h2 className="resetPasswordHeading">Update Password</h2>

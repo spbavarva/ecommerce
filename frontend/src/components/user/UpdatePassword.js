@@ -1,7 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import "./updatePassword.css";
 import Loader from "../layout/loader/Loader";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import { clearError, updatePassword } from "../../actions/userActions";
@@ -54,7 +53,7 @@ const UpdatePassword = () => {
         <Loader />
       ) : (
         <Fragment>
-          <MetaData title="Update Password" />
+          <MetaData title="Update Password | One Shop Stop" />
           <div className="updatePasswordContainer">
             <div className="updatePasswordBox">
               <h2 className="updatePasswordHeading">Update Password</h2>

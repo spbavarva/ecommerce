@@ -118,7 +118,7 @@ const Payment = () => {
 
   return (
     <Fragment>
-      <MetaData title="Payment" />
+      <MetaData title="Payment | One Shop Stop" />
       <CheckoutSteps activeStep={2} />
       <div className="paymentContainer">
         <form className="paymentForm" onSubmit={(e) => submitHandler(e)}>

@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Footer from "./components/layout/footer/Footer";
 import Home from "./components/home/Home";
 import WebFont from "webfontloader";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import ProductDetails from "./components/product/ProductDetails";
 import Products from "./components/product/Products";
 import Search from "./components/product/Search";
@@ -27,6 +27,19 @@ import axios from "axios";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import OrderSuccess from "./components/cart/OrderSuccess";
+import MyOrder from "./components/order/MyOrder";
+import OrderDetails from "./components/order/OrderDetails";
+import Dashboard from "./components/admin/Dashboard";
+import ProductList from "./components/admin/ProductList";
+import NewProduct from "./components/admin/NewProduct";
+import UpdateProduct from "./components/admin/UpdateProduct";
+import OrderList from "./components/admin/OrderList";
+import ProcessOrder from "./components/admin/ProcessOrder";
+import UsersList from "./components/admin/UsersList";
+import UpdateUser from "./components/admin/UpdateUser";
+import ProductReviews from "./components/admin/ProductReviews";
+import Contact from './components/layout/contact/Contact';
+import About from './components/layout/about/About';
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -47,31 +60,29 @@ function App() {
         families: ["Roboto", "Droid Sans", "Chilanka"]
       }
     });
-    store.dispatch(loadUser());
-
+    if (isAuthenticated) {
+      store.dispatch(loadUser());
+    }
     // getStripeApiKey();
   }, []);
   return (
     <div className="App">
       <Router>
-        {/* <Route path="/" element={<Header/>}></Route> */}
-
         <Header></Header>
         {isAuthenticated && <UserOptions user={user}></UserOptions>}
         <Routes>
           <Route path="/" element={<Home />}></Route>
+          <Route path="contact" element={<Contact />}></Route>
+          <Route path="about" element={<About />}></Route>
           <Route path="/product/:id" element={<ProductDetails />}></Route>
           <Route path="/products" element={<Products />}></Route>
           <Route path="/products/:keyword" element={<Products />}></Route>
 
           <Route
             path="/account"
-            element={
-              // <ProtectedRoute>
-              <Profile />
-              // </ProtectedRoute>
-            }
+            element={<ProtectedRoute element={<Profile />}> </ProtectedRoute>}
           ></Route>
+
           <Route path="/search" element={<Search />}></Route>
           <Route path="/me/update" element={<UpdateProfile />}></Route>
           <Route path="/password/update" element={<UpdatePassword />}></Route>
@@ -83,9 +94,27 @@ function App() {
           <Route path="/login" element={<LoginSignup />}></Route>
           <Route path="/cart" element={<Cart />}></Route>
           <Route path="/login/shipping" element={<Shipping />}></Route>
-          <Route path="/order/confirm" element={<ConfirmOrder />}></Route>
           <Route path="/success" element={<OrderSuccess />}></Route>
+          <Route
+            path="/orders"
+            element={<ProtectedRoute element={<MyOrder />}> </ProtectedRoute>}
+          ></Route>
 
+          <Route path="/admin/dashboard" element={<Dashboard />}></Route>
+          <Route path="/admin/products" element={<ProductList />}></Route>
+          <Route path="/admin/product" element={<NewProduct />}></Route>
+          <Route path="/admin/product/:id" element={<UpdateProduct />}></Route>
+          <Route path="/admin/orders" element={<OrderList />}></Route>
+          <Route path="/admin/orders/:id" element={<ProcessOrder />}></Route>
+          <Route path="/admin/users" element={<UsersList />}></Route>
+          <Route path="/admin/user/:id" element={<UpdateUser />}></Route>
+          <Route path="/admin/reviews" element={<ProductReviews />}></Route>
+
+          <Route>
+            <Route path="/order/confirm" element={<ConfirmOrder />}></Route>
+
+            <Route path="/order/:id" element={<OrderDetails />}></Route>
+          </Route>
           <Route
             path="/account/payment"
             element={
@@ -94,13 +123,7 @@ function App() {
               </Elements>
             }
           ></Route>
-
-          {/* <Elements stripe={loadStripe(stripeApiKey)}>
-              <Route path="/account/payment" element={<Payment />}></Route>
-            </Elements> */}
         </Routes>
-        {/* <Route path="/" element={<Footer />}></Route> */}
-        {/* <Home/> */}
 
         <Footer></Footer>
       </Router>
