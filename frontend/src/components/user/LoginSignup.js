@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import { clearError, login, register } from "../../actions/userActions";
 import { useNavigate, useLocation } from "react-router-dom";
-import Form from "react-bootstrap/Form";
 
 const LoginSignup = () => {
   const dispatch = useDispatch();
@@ -28,19 +27,10 @@ const LoginSignup = () => {
     email: "",
     password: ""
   });
-  // const [name, setName] = useState('');
-  // const [email, setEmail] = useState('');
-  // const [passwordd, setPasswordd] = useState('');
-  // const [avatar, setAvatar] = useState("./Profile.png");
-  // const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
-  // const [picMessage, setPicMessage] = useState("");
-  // const [pic, setPic] = useState("/Profile.png");
 
   const { loading, error, isAuthenticated } = useSelector(
     (state) => state.user
   );
-
-  // const { password, email, name } = user;
   const loginSubmit = (e) => {
     e.preventDefault();
 
@@ -53,58 +43,13 @@ const LoginSignup = () => {
     e.preventDefault();
 
     dispatch(register(name, email, password));
-    // const myForm = new FormData();
-
-    // myForm.set("name", name);
-    // myForm.set("email", email);
-    // myForm.set("password", password);
-    // myForm.set("avatar", avatar);
   };
-
-  // const postDetails = (pics) => {
-  //   console.log('hello')
-  //   if (!pics) {
-  //     return setPicMessage("please select an image");
-  //   }
-  //   setPicMessage(null);
-  //   if (pics.type === "image/jpeg" || pics.type === "image/png") {
-  //     const data = new FormData();
-  //     data.append("file", pics);
-  //     data.append("upload_preset", "notezipper");
-  //     data.append("cloud_name", "dcmb0kcn5");
-  //     fetch("https://api.cloudinary.com/v1_1/dcmb0kcn5/image/upload", {
-  //       method: "post",
-  //       body: data
-  //     })
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         console.log(data);
-  //         setPic(data.url.toString());
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   } else {
-  //     return setPicMessage("please select an image");
-  //   }
-  // };
 
   const registerDataChange = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
 
     setUser({ ...user, [name]: value });
-    // if (e.target.name === "avatar") {
-    //   const reader = new FileReader();
-    //   reader.onload = () => {
-    //     if (reader.readyState === 2) {
-    //       // setAvatarPreview(reader.result);
-    //       // setAvatar(reader.result);
-    //     }
-    //   };
-    //   reader.readAsDataURL(e.target.files[0]);
-    // } else {
-    // }
   };
 
   const redirect = location.search ? location.search.split("=")[1] : "/account";
@@ -118,7 +63,7 @@ const LoginSignup = () => {
     if (isAuthenticated) {
       navigate(redirect);
     }
-  }, [dispatch, error, alert, isAuthenticated, navigate,redirect]);
+  }, [dispatch, error, alert, isAuthenticated, navigate, redirect]);
 
   const switchTabs = (e, tab) => {
     if (tab === "login") {

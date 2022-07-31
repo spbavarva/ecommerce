@@ -1,7 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import "./updateProfile.css";
 import Loader from "../layout/loader/Loader";
-import { Link } from "react-router-dom";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import FaceIcon from "@mui/icons-material/Face";
 import { useDispatch, useSelector } from "react-redux";
@@ -77,7 +76,7 @@ const UpdateProfile = () => {
         <Loader />
       ) : (
         <Fragment>
-          <MetaData title="Update Profile" />
+          <MetaData title="Update Profile | One Shop Stop" />
           <div className="updateProfileContainer">
             <div className="updateProfileBox">
               <h2 className="updateProfileHeading">Update Profile</h2>

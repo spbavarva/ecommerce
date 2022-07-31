@@ -2,8 +2,7 @@ import React, { Fragment, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Loader from "../layout/loader/Loader";
 import MetaData from "../layout/MetaData";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./profile.css";
 
 const Profile = () => {
@@ -15,7 +14,7 @@ const Profile = () => {
     if (isAuthenticated === false) {
       navigate("/login");
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, navigate]);
   return (
     <Fragment>
       {loading ? (

@@ -3,7 +3,7 @@ import MetaData from "../layout/MetaData";
 import { useNavigate } from "react-router-dom";
 import "./search.css";
 
-const Search = ({ history }) => {
+const Search = () => {
   const [keyword, setKeyword] = useState("");
 
   const navigate = useNavigate();
@@ -11,7 +11,6 @@ const Search = ({ history }) => {
   const searchSubmitHandler = (e) => {
     e.preventDefault();
     if (keyword.trim()) {
-    //   history.push(`/products/${keyword}`);
       navigate(`/products/${keyword}`);
     } else {
       navigate(`/products`);
@@ -19,12 +18,8 @@ const Search = ({ history }) => {
   };
 
   return (
-    // <Fragment>
-    //   {loading ? (
-    //     <Loader />
-    //   ) : (
     <Fragment>
-      <MetaData title="Search A Product -- ECOMMERCE"></MetaData>
+      <MetaData title="Search A Product | One Shop Stop"></MetaData>
       <form className="searchBox" onSubmit={searchSubmitHandler}>
         <input
           type="text"
@@ -36,8 +31,6 @@ const Search = ({ history }) => {
         <input type="submit" value="Search"></input>
       </form>
     </Fragment>
-    //       )}
-    //     </Fragment>
   );
 };
 

@@ -12,7 +12,7 @@ exports.newOrder = catchAsyncError(async (req, res, next) => {
     itemsPrice,
     taxPrice,
     shippingPrice,
-    totalPrice,
+    totalPrice
   } = req.body;
 
   const order = await Order.create({
@@ -24,7 +24,7 @@ exports.newOrder = catchAsyncError(async (req, res, next) => {
     shippingPrice,
     totalPrice,
     paidAt: Date.now(),
-    user: req.user._id,
+    user: req.user._id
   });
 
   res.status(201).json({ success: true, order });
@@ -68,6 +68,8 @@ exports.getAllOrders = catchAsyncError(async (req, res, next) => {
 exports.updateOrders = catchAsyncError(async (req, res, next) => {
   const order = await Order.findById(req.params.id);
 
+  console.log("update order status");
+
   if (!order) {
     return next(new ErrorHander("Order not found with this Id", 404));
   }
@@ -76,9 +78,11 @@ exports.updateOrders = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("You have already delivered this order", 400));
   }
 
-  order.orderItems.forEach(async (o) => {
-    await updateStock(o.Product, o.quantity);
-  });
+  if (req.body.status === "Shipped") {
+    order.orderItems.forEach(async (o) => {
+      await updateStock(o.product, o.quantity);
+    });
+  }
 
   order.orderStatus = req.body.status;
   if (req.body.status === "Delivered") {
@@ -92,11 +96,7 @@ exports.updateOrders = catchAsyncError(async (req, res, next) => {
 
 async function updateStock(id, quantity) {
   const product = await Product.findById(id);
-  //   const product = await Product.findByIdAndUpdate(_id=id, {
-  //       $set:{
-  //         "Stock":7
-  //       }
-  //   });
+  console.log("updateStock");
 
   product.stock -= quantity;
 

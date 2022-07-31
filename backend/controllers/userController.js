@@ -21,8 +21,8 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
     password,
     avatar: {
       public_id: "sample ID",
-      url: "profileURL",
-    },
+      url: "profileURL"
+    }
   });
 
   sendToken(user, 201, res);
@@ -62,7 +62,7 @@ exports.loginUser = catchAsyncError(async (req, res, next) => {
 exports.logOutUser = catchAsyncError(async (req, res, next) => {
   res.cookie("token", null, {
     expires: new Date(Date.now()),
-    httpOnly: true,
+    httpOnly: true
   });
 
   res.status(200).json({ success: true, message: "Logged out" });
@@ -93,12 +93,12 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
     await sendMail({
       email: user.email,
       subject: "Ecommerce Password reset",
-      message,
+      message
     });
 
     res.status(200).json({
       success: true,
-      message: `Email sent to ${user.email} successfully`,
+      message: `Email sent to ${user.email} successfully`
     });
   } catch (error) {
     user.resetPasswordToken = undefined;
@@ -119,7 +119,7 @@ exports.resetPassword = catchAsyncError(async (req, res, next) => {
 
   const user = await User.findOne({
     resetPasswordToken,
-    resetPasswordExpire: { $gt: Date.now() },
+    resetPasswordExpire: { $gt: Date.now() }
   });
 
   if (!user) {
@@ -171,7 +171,7 @@ exports.updateUserPassword = catchAsyncError(async (req, res, next) => {
 exports.updateUserProfile = catchAsyncError(async (req, res, next) => {
   const newUserData = {
     name: req.body.name,
-    email: req.body.email,
+    email: req.body.email
   };
 
   // update avatar when add cloudnary
@@ -179,7 +179,7 @@ exports.updateUserProfile = catchAsyncError(async (req, res, next) => {
   const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
     new: true,
     runValidators: true,
-    useFindAndModify: false,
+    useFindAndModify: false
   });
   res.status(200).json({ success: true });
 });
@@ -210,27 +210,20 @@ exports.updateUserRole = catchAsyncError(async (req, res, next) => {
   const newUserData = {
     name: req.body.name,
     email: req.body.email,
-    role: req.body.role,
+    role: req.body.role
   };
-
-  const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
+  
+  await User.findByIdAndUpdate(req.params.id, newUserData, {
     new: true,
     runValidators: true,
-    useFindAndModify: false,
+    useFindAndModify: false
   });
-
-  if (!user) {
-    return next(
-      new ErrorHandler(`User not exist with id: ${req.params.id}`, 400)
-    );
-  }
 
   res.status(200).json({ success: true });
 });
 
 //Delete User -- ADMIN
 exports.deleteUserProfile = catchAsyncError(async (req, res, next) => {
-
   //will delete cloudnary later
 
   const user = await User.findById(req.params.id);
@@ -242,5 +235,7 @@ exports.deleteUserProfile = catchAsyncError(async (req, res, next) => {
   }
 
   await User.findOneAndDelete({ _id: req.params.id });
-  res.status(200).json({ success: true, message:"User deleted successfully." });
+  res
+    .status(200)
+    .json({ success: true, message: "User deleted successfully." });
 });

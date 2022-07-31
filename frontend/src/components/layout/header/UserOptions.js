@@ -25,7 +25,11 @@ const UserOptions = ({ user }) => {
     { icon: <ListAltIcon />, name: "Orders", func: orders },
     { icon: <PersonIcon />, name: "Profile", func: account },
     {
-      icon: <ShoppingCartIcon style={{color:cartItems.length>0?'tomato':null}} />,
+      icon: (
+        <ShoppingCartIcon
+          style={{ color: cartItems.length > 0 ? "tomato" : null }}
+        />
+      ),
       name: `Cart(${cartItems.length})`,
       func: cart
     },
@@ -41,7 +45,7 @@ const UserOptions = ({ user }) => {
   }
 
   function dashboard() {
-    navigate("/dashboard");
+    navigate("/admin/dashboard");
   }
 
   function orders() {

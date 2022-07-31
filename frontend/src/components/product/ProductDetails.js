@@ -1,16 +1,31 @@
-// import { Carousel } from "react-carousel-minimal";
 import React, { Fragment, useEffect, useState } from "react";
 import Carousel from "react-material-ui-carousel";
-import ReactStars from "react-rating-stars-component";
 import Loader from "../layout/loader/Loader";
 import "./ProductDetails.css";
-import { clearError, getProductDetails } from "../../actions/productAction";
+import {
+  clearError,
+  getProductDetails,
+  newReview
+} from "../../actions/productAction";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useAlert } from "react-alert";
-// import { Rating } from "@mui/material";
 import ReviewCard from "./ReviewCard.js";
 import { addItemsToCart } from "../../actions/cartActions";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  Paper
+} from "@material-ui/core";
+import { Rating } from "@material-ui/lab";
+import { NEW_REVIEW_RESET } from "../../constants/productConstants";
+import SwipeableTextMobileStepper from "./SwipeableTextMobileStepper";
+import { useNavigate } from "react-router-dom";
+import { TextField } from "@mui/material";
+import { inputLabelClasses } from "@mui/material/InputLabel";
 
 // const App = () => {
 //   const data = [
@@ -58,49 +73,41 @@ const ProductDetails = () => {
   //     fontSize: "20px",
   //     fontWeight: "bold",
   //   };
-
+  const items = [
+    {
+      name: "Aya Bouchiha",
+      description: "Full Stack Web Developer"
+    },
+    {
+      name: "John Doe",
+      description: "Author"
+    },
+    {
+      name: "Pitsu Coma",
+      description: "Math Student"
+    }
+  ];
   const dispatch = useDispatch();
-
   const alert = useAlert();
-
-  //   const params = useParams();
-
-  //   let product = useSelector((state) => state.productDetails);
-  //   const { name, loading, images, error } = product;
+  const { id } = useParams();
   const { product, loading, error } = useSelector(
-    (state) => state.productDetails
+    state => state.productDetails
   );
+  const { success, error: reviewError } = useSelector(state => state.newReview);
 
   console.log(product);
 
-  const { id } = useParams();
-  console.log(id);
-
-  // const options = {
-  //   size: "large",
-  //   value: product.ratings,
-  //   readOnly: true,
-  //   precision: 0.5
-  // };
-
-  useEffect(() => {
-    if (error) {
-      alert.error(error);
-      dispatch(clearError());
-    }
-    dispatch(getProductDetails(id));
-  }, [dispatch, error, alert, id]);
-
   const options = {
-    edit: false,
-    color: "rgba(20,20,20,0.1)",
-    activeColor: "tomato",
-    size: window.innerWidth < 600 ? 20 : 25,
+    size: "large",
     value: product.ratings,
-    isHalf: true
+    readOnly: true,
+    precision: 0.5
   };
 
   const [quantity, setQuantity] = useState(1);
+  const [open, setOpen] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
 
   const increaseQuantity = () => {
     if (product.stock <= quantity) return;
@@ -117,83 +124,196 @@ const ProductDetails = () => {
 
   const addToCartHandler = () => {
     dispatch(addItemsToCart(id, quantity));
-    alert.success('Item added successfully to cart')
+    alert.success("Item added successfully to cart");
   };
+
+  const submitReviewToggle = () => {
+    open ? setOpen(false) : setOpen(true);
+  };
+
+  const reviewSubmitHandler = () => {
+    const myForm = new FormData();
+
+    myForm.set("rating", rating);
+    myForm.set("comment", comment);
+    myForm.set("productId", id);
+
+    dispatch(newReview(myForm));
+
+    setOpen(false);
+  };
+
+  const [keyword, setKeyword] = useState("");
+
+  const navigate = useNavigate();
+
+  const searchSubmitHandler = e => {
+    e.preventDefault();
+    if (keyword.trim()) {
+      navigate(`/products/${keyword}`);
+    } else {
+      navigate(`/products`);
+    }
+  };
+
+  useEffect(
+    () => {
+      if (error) {
+        alert.error(error);
+        dispatch(clearError());
+      }
+
+      if (reviewError) {
+        alert.error(reviewError);
+        dispatch(clearError());
+      }
+
+      if (success) {
+        console.log("hello");
+        dispatch({ type: NEW_REVIEW_RESET });
+        alert.success("Review Submitted Successfully");
+      }
+
+      dispatch(getProductDetails(id));
+    },
+    [dispatch, error, alert, id, reviewError, success]
+  );
   return (
     <Fragment>
-      {loading ? (
-        <Loader />
-      ) : (
-        <Fragment>
-          <div className="ProductDetails">
-            <div>
-              <Carousel>
-                {product.images &&
-                  product.images.map((images, i) => {
-                    <img
-                      className="CarouselImage"
-                      key={images.url}
-                      src={images.url}
-                      alt={`${i} slide`}
-                    />;
-                  })}
-              </Carousel>
-            </div>
-            <div>
-              <div className="detailsBlock-1">
-                <h2>{product.name}</h2>
-                <p>product # {id}</p>
+      {loading
+        ? <Loader />
+        : <Fragment>
+            <form className="search" onSubmit={searchSubmitHandler}>
+              <TextField
+                id="standard-search"
+                label="Search products..."
+                InputLabelProps={{
+                  sx: {
+                    // color: "red",
+                    [`&.${inputLabelClasses.shrink}`]: {
+                      color: "tomato"
+                    }
+                  }
+                }}
+                type="search"
+                onChange={e => {
+                  setKeyword(e.target.value);
+                }}
+                variant="standard"
+              />
+              <Button
+                style={{
+                  color: "tomato",
+                  height: "30%",
+                  border: "1px solid tomato",
+                  margin: "0.5vmax",
+                  padding: "1vmax",
+                  width: "7%",
+                  font: "100 1.1vmax",
+                  cursor: "pointer",
+                  transition: "all 0.5s"
+                }}
+                type="submit"
+                value="Search"
+                variant="outlined"
+              >
+                Search
+              </Button>
+            </form>
+
+            <div className="ProductDetails">
+              <div>
+                <SwipeableTextMobileStepper />
               </div>
-              <div className="detailsBlock-2">
-                {/* <Rating {...options} /> */}
-                <ReactStars {...options} />
-                <span className="detailsBlock-2-span">
-                  {" "}
-                  ({product.numOfReviews} Reviews)
-                </span>
-              </div>
-              <div className="detailsBlock-3">
-                <h1>{`$${product.price}`}</h1>
-                <div className="detailsBlock-3-1">
-                  <div className="detailsBlock-3-1-1">
-                    <button onClick={decreaseQuantity}>-</button>
-                    <input readOnly type="number" value={quantity} />
-                    <button onClick={increaseQuantity}>+</button>
+              <div>
+                <div className="detailsBlock-1">
+                  <h2>
+                    {product.name}
+                  </h2>
+                </div>
+                <div className="detailsBlock-2">
+                  <Rating {...options} />
+                  <span className="detailsBlock-2-span">
+                    {" "}({product.numOfReviews} Reviews)
+                  </span>
+                </div>
+                <div className="detailsBlock-3">
+                  <h1>{`$${product.price}`}</h1>
+                  <div className="detailsBlock-3-1">
+                    <div className="detailsBlock-3-1-1">
+                      <button onClick={decreaseQuantity}>-</button>
+                      <input readOnly type="number" value={quantity} />
+                      <button onClick={increaseQuantity}>+</button>
+                    </div>
+                    <button
+                      onClick={addToCartHandler}
+                      disabled={product.stock < 1 ? true : false}
+                    >
+                      Add to Cart
+                    </button>
                   </div>
-                  <button onClick={addToCartHandler} disabled={product.stock < 1 ? true : false}>
-                    Add to Cart
-                  </button>
+
+                  <p>
+                    Status:
+                    <b
+                      className={product.stock < 1 ? "redColor" : "greenColor"}
+                    >
+                      {product.stock < 1 ? "OutOfStock" : "InStock"}
+                    </b>
+                  </p>
                 </div>
 
-                <p>
-                  Status:
-                  <b className={product.stock < 1 ? "redColor" : "greenColor"}>
-                    {product.stock < 1 ? "OutOfStock" : "InStock"}
-                  </b>
-                </p>
+                <div className="detailsBlock-4">
+                  Description : <p>{product.description}</p>
+                </div>
+
+                <button onClick={submitReviewToggle} className="submitReview">
+                  Submit Review
+                </button>
               </div>
-
-              <div className="detailsBlock-4">
-                Description : <p>{product.description}</p>
-              </div>
-
-              <button className="submitReview">Submit Review</button>
             </div>
-          </div>
-          <h3 className="reviewsHeading">REVIEWS</h3>
+            <h3 className="reviewsHeading">REVIEWS</h3>
 
-          {product.reviews && product.reviews[0] ? (
-            <div className="reviews">
-              {product.reviews &&
-                product.reviews.map((review) => (
-                  <ReviewCard review={review}></ReviewCard>
-                ))}
-            </div>
-          ) : (
-            <p className="noReviews">No Reviews Yet</p>
-          )}
-        </Fragment>
-      )}
+            <Dialog
+              aria-labelledby="simple-dialog-title"
+              open={open}
+              onClose={submitReviewToggle}
+            >
+              <DialogTitle>Submit Review</DialogTitle>
+              <DialogContent className="submitDialog">
+                <Rating
+                  onChange={e => setRating(e.target.value)}
+                  value={rating}
+                  size="large"
+                />
+
+                <textarea
+                  className="submitDialogTextArea"
+                  cols="30"
+                  rows="5"
+                  value={comment}
+                  onChange={e => setComment(e.target.value)}
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={submitReviewToggle} color="secondary">
+                  Cancel
+                </Button>
+                <Button onClick={reviewSubmitHandler} color="primary">
+                  Submit
+                </Button>
+              </DialogActions>
+            </Dialog>
+
+            {product.reviews && product.reviews[0]
+              ? <div className="reviews">
+                  {product.reviews &&
+                    product.reviews.map(review =>
+                      <ReviewCard review={review} />
+                    )}
+                </div>
+              : <p className="noReviews">No Reviews Yet</p>}
+          </Fragment>}
     </Fragment>
   );
 };

@@ -1,18 +1,15 @@
 import React, { Fragment, useState, useEffect } from "react";
 import "./forgotPassword.css";
 import Loader from "../layout/loader/Loader";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import { useAlert } from "react-alert";
 import { clearError, forgotPassword } from "../../actions/userActions";
-import { useNavigate } from "react-router-dom";
 import MetaData from "../layout/MetaData";
 
 const ForgotPassword = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
-  const navigate = useNavigate();
 
   const { error, message, loading } = useSelector((state) => state.forgot);
 
@@ -41,7 +38,7 @@ const ForgotPassword = () => {
         <Loader />
       ) : (
         <Fragment>
-          <MetaData title="Forgot Password" />
+          <MetaData title="Forgot Password | One Shop Stop" />
           <div className="forgotPasswordContainer">
             <div className="forgotPasswordBox">
               <h2 className="forgotPasswordHeading">Forgot Password</h2>

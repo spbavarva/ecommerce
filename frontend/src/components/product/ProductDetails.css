@@ -188,7 +188,7 @@
 }
 .reviewCardComment {
   color: rgba(0, 0, 0, 0.445);
-  font: 300 0.8vmax cursive;
+  font: 300 1vmax cursive;
 }
 
 .noReviews {
@@ -281,4 +281,33 @@
   .reviewCardComment {
     font: 300 5vw cursive;
   }
+}
+
+.search {
+  width: 100vw;
+  height: 15vh;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  top:30%;
+  left:0%;
+}
+.search > input[type="submit"] {
+  height: 43%;
+  border-radius: 0%;
+  background-color: tomato;
+  border: none;
+  margin: 0.5vmax;
+  padding: 1vmax;
+  width: 7%;
+  font: 100 1.1vmax "Roboto";
+  cursor: pointer;
+  transition: all 0.5s;
+  color: white;
+}
+
+.search > input[type="submit"]:hover {
+  background-color: rgb(55, 97, 214);
 }

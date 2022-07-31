@@ -16,7 +16,7 @@ const Footer = () => {
       </div>
 
       <div className="midFooter">
-        <h1>ECOMMERCE.</h1>
+        <h1>One Shop Stop</h1>
         <p>High Quality is our first priority</p>
 
         <p>Copyrights 2021 &copy; sp_bavarva</p>
@@ -25,7 +25,7 @@ const Footer = () => {
       <div className="rightFooter">
         <h4>Follow Us</h4>
         <a href="https://www.instagram.com/sp_bavarva/">Instagram</a>
-        <a href="http://youtube.com/6packprogramemr">Youtube</a>
+        <a href="https://www.youtube.com/channel/UCTcZmt1NTtzhTMZhy5iX98w/videos">Youtube</a>
       </div>
     </footer>
       </Fragment>
